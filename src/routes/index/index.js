@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Layout, Menu, Icon } from 'antd';
-import { routerRedux, Route, Switch, Link } from 'dva/router';
+import { routerRedux, Route, Switch, Link, Redirect } from 'dva/router';
 import { menu } from './menu';
 
 import PageSignIn from '../signIn';
@@ -33,6 +33,10 @@ class PageIndex extends React.Component {
     if( location.pathname === '/login'){
       return <PageLogin/>;
     }
+    const base = ()=>{
+      return <Redirect to='/edu/sign-in' />
+    }
+
     return (
       <div>
         <Layout className={style.PageIndex}>
@@ -66,6 +70,7 @@ class PageIndex extends React.Component {
             </Header>
             <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
               <Switch>
+                <Route path='/' exact component={base} />
                 <Route exact path="/edu/sign-in" component={PageSignIn} />
                 <Route exact path="/edu/upload-files" component={PageUploadFiles} />
               </Switch>

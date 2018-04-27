@@ -16,8 +16,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(location => {
-        console.log( history, 'ddddd')
-
         if (location.pathname.includes('edu')) {
           dispatch({
             type: 'loginhook',
