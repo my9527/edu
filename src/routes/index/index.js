@@ -47,12 +47,14 @@ class PageIndex extends React.Component {
           >
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={[activeItem.id]}>
-              <Menu.Item style={{ textAlign: 'text-center' }}>
-                <Icon
-                  className="trigger"
-                  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                  onClick={this.toggle}
-                />
+              <Menu.Item >
+                <div onClick={this.toggle} className={style.triggerCnt}>
+                  <Icon
+                    className="trigger"
+                    type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+
+                  />
+                </div>
               </Menu.Item>
               { menu.map((menuItem) => {
                 return (
