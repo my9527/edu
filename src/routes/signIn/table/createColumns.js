@@ -30,6 +30,7 @@ export default class SignTable extends React.Component {
       title: '名字',
       dataIndex: 'user_name',
       key: 'name',
+      width: '200px',
       render: text => <a href="javascript:;">{text}</a>,
     }, {
       title: '所属年（班）级',

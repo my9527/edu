@@ -5,7 +5,7 @@ import  createLoading from 'dva-loading';
 // 1. Initialize
 const app = dva({
   ...createLoading({
-    effect: true,
+    effects: true,
   })
 });
 

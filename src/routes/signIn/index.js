@@ -28,7 +28,8 @@ const Grade = [{
 
 @connect((state) => {
   return {
-    records: state.signIn.records
+    records: state.signIn.records,
+    loading: state.loading.effects['signIn/fetchData']
   }
 })
 class PageSignIn extends React.Component {
@@ -36,7 +37,7 @@ class PageSignIn extends React.Component {
   state = {
      pagination: {
       current: 1,
-      pageSize: 15,
+      pageSize: 10,
       showQuickJumper: true,
     },
     grade: 1,
@@ -90,7 +91,7 @@ class PageSignIn extends React.Component {
     return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
   render() {
-    const { records } = this.props;
+    const { records, loading } = this.props;
     const { pagination, grade } = this.state;
 
     return (
@@ -115,6 +116,7 @@ class PageSignIn extends React.Component {
           <SignTable
             data={records}
             grade={grade}
+            loading={loading}
             update={this.updateTable}
             onChange={this.onTableChange}
             pagination={pagination}
