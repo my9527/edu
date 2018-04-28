@@ -1,8 +1,13 @@
 import dva from 'dva';
 import './index.css';
+import  createLoading from 'dva-loading';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+  ...createLoading({
+    effect: true,
+  })
+});
 
 // 2. Plugins
 // app.use({});
@@ -10,6 +15,7 @@ const app = dva();
 // 3. Model
 app.model(require('./models/app').default);
 app.model(require('./models/login').default);
+app.model(require('./models/signIn').default);
 
 // 4. Router
 app.router(require('./router').default);

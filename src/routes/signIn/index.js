@@ -1,36 +1,10 @@
 import React from 'react';
 import { Row, Col, Select } from 'antd';
+import { connect } from 'dva';
 import SignTable from './table/createColumns';
-import style from './index.less'
+import style from './index.less';
 
 const Option = Select.Option;
-
-const tempData = [
-    {
-      "id":4,
-      "user_name":"徐照钱",
-      "ding_user_id":"",
-      "wechat_open_id":"",
-      "phone":"18355165930",
-      "user_type":0,
-      "user_status":0,
-      "update_time":"0001-01-01T00:00:00Z",
-      "checkin_status":"0000000000",
-      "last_checkin_record_id":0
-    },
-    {
-      "id":6,
-      "user_name":"赖庆财",
-      "ding_user_id":"",
-      "wechat_open_id":"",
-      "phone":"13096372503",
-      "user_type":0,
-      "user_status":0,
-      "update_time":"0001-01-01T00:00:00Z",
-      "checkin_status":"0110000000",
-      "last_checkin_record_id":0
-    }
-];
 
 const Grade = [{
   name: '一年级',
@@ -52,28 +26,72 @@ const Grade = [{
   id:6,
 }];
 
+@connect((state) => {
+  return {
+    records: state.signIn.records
+  }
+})
 class PageSignIn extends React.Component {
 
   state = {
      pagination: {
       current: 1,
-      pageSize: 1,
+      pageSize: 15,
       showQuickJumper: true,
     },
+    grade: 1,
+  };
+  componentDidMount(){
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'signIn/fetchData',
+      payload: {
+        grade: 1,
+        page: 1,
+      }
+    })
+  }
+
+  updateTable = () => {
+    const {grade, pagination} = this.state;
+    this.getData(grade, pagination.current);
   };
 
+
+
   onTableChange = (pagination, filters, sorter) => {
-      this.setState({pagination})
+     const { disptach } = this.props;
+     const { grade } = this.state;
+     this.setState({pagination});
+     // 暂时未分页
+     // this.getData(grade, pagination.current);
   };
-  handleChange = (e)=>{
+
+  getData = (grade, page) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'signIn/fetchData',
+      payload: {
+        grade,
+        page,
+      }
+    });
+    this.setState({
+      grade,
+      pagination: { ...this.state.pagination, current: page},
+    })
+  }
+  handleChange = (grade)=>{
+    this.setState({grade});
+    this.getData(grade, 1);
 
   };
   handleFilter = (input, option) => {
     return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
   render() {
-    // const { pagination } = this.props;
-    const { pagination } = this.state;
+    const { records } = this.props;
+    const { pagination, grade } = this.state;
 
     return (
       <div>
@@ -95,7 +113,9 @@ class PageSignIn extends React.Component {
         </div>
         <div>
           <SignTable
-            data={tempData}
+            data={records}
+            grade={grade}
+            update={this.updateTable}
             onChange={this.onTableChange}
             pagination={pagination}
           />

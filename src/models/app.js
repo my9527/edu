@@ -17,9 +17,9 @@ export default {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(location => {
         if (location.pathname.includes('edu')) {
-          dispatch({
-            type: 'loginhook',
-          });
+          // dispatch({
+          //   type: 'loginhook',
+          // });
         }
       });
     },

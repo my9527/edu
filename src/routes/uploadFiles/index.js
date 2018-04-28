@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Upload, Button, Icon, message } from 'antd';
+import { BASE_URL } from '../../utils/request';
 
 class PageUploadFiles extends React.Component {
 
@@ -8,8 +9,9 @@ class PageUploadFiles extends React.Component {
 
     const props = {
       name: 'file',
-      action: '/v1/uploads',
+      action: BASE_URL + '/v1/uploads',
       listType: 'picture',
+      accept:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       onChange: (info) => {
         if (info.file.status === 'done') {
           message.success('上传成功');

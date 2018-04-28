@@ -11,6 +11,6 @@ export const menu = [
     path: '/edu/upload-files',
     name: '数据导入',
     id: 'uploadFiles',
-    icon: 'video-camera'
+    icon: 'cloud-o'
   }
 ];

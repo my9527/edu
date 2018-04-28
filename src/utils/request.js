@@ -39,7 +39,7 @@ const pull = (url, options) => {
   }, '?').slice(0, -1);
 
   return request(BASE_URL+url+params, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       ...headers,
@@ -73,7 +73,25 @@ const post = (url, options) => {
   })
 };
 
+const patch = (url, options) => {
+  const { isFormData = false, headers, ...res } = options;
+
+  const params =  Object.keys(res.data).reduce((result, cur)=>{
+    return result += `${cur}=${res.data[cur]}&`
+  }, '?').slice(0, -1);
+
+  return request(BASE_URL+url+params, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    }
+  })
+};
+
 export {
   pull,
   post,
+  patch,
+  BASE_URL
 }

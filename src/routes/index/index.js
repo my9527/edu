@@ -47,6 +47,13 @@ class PageIndex extends React.Component {
           >
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={[activeItem.id]}>
+              <Menu.Item style={{ textAlign: 'text-center' }}>
+                <Icon
+                  className="trigger"
+                  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                  onClick={this.toggle}
+                />
+              </Menu.Item>
               { menu.map((menuItem) => {
                 return (
                   <Menu.Item key={menuItem.id}>
@@ -62,11 +69,6 @@ class PageIndex extends React.Component {
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <Icon
-                className="trigger"
-                type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={this.toggle}
-              />
             </Header>
             <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
               <Switch>
