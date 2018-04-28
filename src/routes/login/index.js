@@ -16,6 +16,9 @@ import { post } from '../../utils/request';
 @Form.create()
 class PageLogin extends React.Component {
 
+  /**
+   * 登录
+   */
   handleSubmit = (e) => {
     const { form, dispatch } = this.props;
     e.preventDefault();

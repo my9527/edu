@@ -53,13 +53,21 @@ class PageSignIn extends React.Component {
     })
   }
 
+  /**
+   * 签到后刷新当前的table
+   */
   updateTable = () => {
     const {grade, pagination} = this.state;
     this.getData(grade, pagination.current);
   };
 
 
-
+  /**
+   * table 翻页，记录当前的页码
+   * @param pagination
+   * @param filters
+   * @param sorter
+   */
   onTableChange = (pagination, filters, sorter) => {
      const { disptach } = this.props;
      const { grade } = this.state;
@@ -68,6 +76,11 @@ class PageSignIn extends React.Component {
      // this.getData(grade, pagination.current);
   };
 
+  /**
+   * 获取信息， 与 models 中的 signIn 里面的 fetch 挂钩
+   * @param grade
+   * @param page
+   */
   getData = (grade, page) => {
     const { dispatch } = this.props;
     dispatch({
@@ -82,11 +95,21 @@ class PageSignIn extends React.Component {
       pagination: { ...this.state.pagination, current: page},
     })
   }
+  /**
+   * 年级变化后重新请求数据
+   * @param grade
+   */
   handleChange = (grade)=>{
     this.setState({grade});
     this.getData(grade, 1);
 
   };
+  /**
+   * 快速查询年级
+   * @param input
+   * @param option
+   * @returns {boolean}
+   */
   handleFilter = (input, option) => {
     return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };

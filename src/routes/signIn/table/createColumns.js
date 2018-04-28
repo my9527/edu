@@ -13,6 +13,12 @@ export default class SignTable extends React.Component {
   render() {
     const {data, ...tableProps} = this.props;
 
+    /**
+     * 签到
+     * @param isCanCheck 是否能签到
+     * @param id  学生id
+     * @returns {*}
+     */
     const checkIn = (isCanCheck, id) => {
       if(isCanCheck !== '0') return;
       return patch('/v1/checkin', {
@@ -26,6 +32,7 @@ export default class SignTable extends React.Component {
       })
     };
 
+    // table 每一列的对应，dataIndex 为对应的数据字段名
     const columns = [{
       title: '名字',
       dataIndex: 'user_name',

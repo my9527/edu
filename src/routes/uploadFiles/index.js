@@ -7,6 +7,7 @@ class PageUploadFiles extends React.Component {
 
   render() {
 
+    // 上传配置
     const props = {
       name: 'file',
       action: BASE_URL + '/v1/uploads',
