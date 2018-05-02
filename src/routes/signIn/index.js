@@ -1,10 +1,12 @@
 import React from 'react';
-import { Row, Col, Select } from 'antd';
+import { Row, Col, Select, Tabs, Radio } from 'antd';
 import { connect } from 'dva';
 import SignTable from './table/createColumns';
 import style from './index.less';
 
 const Option = Select.Option;
+const TabPane = Tabs.TabPane;
+const RadioGroup = Radio.Group;
 
 const Grade = [{
   name: '一年级',
@@ -29,6 +31,7 @@ const Grade = [{
 @connect((state) => {
   return {
     records: state.signIn.records,
+    classes: state.signIn.classes,
     loading: state.loading.effects['signIn/fetchData']
   }
 })
@@ -37,10 +40,11 @@ class PageSignIn extends React.Component {
   state = {
      pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: 9,
       showQuickJumper: true,
     },
     grade: 1,
+    clas: null,
   };
   componentDidMount(){
     const { dispatch } = this.props;
@@ -101,9 +105,17 @@ class PageSignIn extends React.Component {
    */
   handleChange = (grade)=>{
     this.setState({grade});
+    this.setState({
+      clas: null,
+    });
     this.getData(grade, 1);
 
   };
+  changeClas = (e) => {
+    this.setState({
+      clas: e.target.value,
+    })
+  }
   /**
    * 快速查询年级
    * @param input
@@ -115,29 +127,60 @@ class PageSignIn extends React.Component {
   };
   render() {
     const { records, loading } = this.props;
-    const { pagination, grade } = this.state;
+    const { pagination, grade, clas } = this.state;
+
+    let classMap = new Map();
+
+    const filteredRecords = records.filter((record) => {
+      classMap.set(record.class, -1);
+      if (clas || clas === 0){
+        return record.class === clas;
+      }
+      return true;
+    });
+
+    console.log(classMap,Array.from(classMap));
+    // 年级获取
+    const classes = (Array.from(classMap)).map(c=> c[0]);
+    classes.unshift('');
 
     return (
       <div>
         <div className={style.FilterRow}>
-          <div>年纪：</div>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Select a person"
-            optionFilterProp="children"
-            onChange={this.handleChange}
-            filterOption={this.handleFilter}
-            defaultValue={1}
-          >
+          {/*<div>年纪：</div>*/}
+          {/*<Select*/}
+            {/*showSearch*/}
+            {/*style={{ width: 200 }}*/}
+            {/*placeholder="Select a person"*/}
+            {/*optionFilterProp="children"*/}
+            {/*onChange={this.handleChange}*/}
+            {/*filterOption={this.handleFilter}*/}
+            {/*defaultValue={1}*/}
+          {/*>*/}
+            {/*{ Grade.map((grade) => {*/}
+              {/*return <Option key={grade.id} value={grade.id}>{grade.name}</Option>;*/}
+            {/*})}*/}
+          {/*</Select>*/}
+
+          <Tabs className={style.tabs} defaultActiveKey="1" onChange={this.handleChange}>
             { Grade.map((grade) => {
-              return <Option key={grade.id} value={grade.id}>{grade.name}</Option>;
+              return <TabPane tab={grade.name} key={grade.id} >
+                  {classes.length ? (<RadioGroup onChange={this.changeClas} value={this.state.clas}>
+                    {classes.map((cls)=>{
+                      if (cls === undefined || cls === null || cls === '') {
+                        return <Radio key="all">全部</Radio>
+                      }
+                      return <Radio key={cls} value={cls}>{cls} 班</Radio>
+                    })}
+                  </RadioGroup>) : null}
+                <div style={{marginBottom: '1em'}}></div>
+              </TabPane>;
             })}
-          </Select>
+          </Tabs>
         </div>
         <div>
           <SignTable
-            data={records}
+            data={filteredRecords}
             grade={grade}
             loading={loading}
             update={this.updateTable}

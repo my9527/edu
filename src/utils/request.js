@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import { message } from 'antd';
 
 const BASE_URL = 'http://119.29.23.154:9527';
 
@@ -27,7 +28,12 @@ export default function request(url, options) {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
-    .then(data => ({ data }))
+    .then(data => {
+      if(data.err_code !== 0){
+        message.error(data.err_msg);
+      }
+      return ({ data })
+    })
     .catch(err => ({ err }));
 }
 
@@ -66,8 +72,9 @@ const post = (url, options) => {
   return request(BASE_URL+url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       ...headers,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(res.data)
   })

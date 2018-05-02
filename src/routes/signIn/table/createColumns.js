@@ -19,11 +19,12 @@ export default class SignTable extends React.Component {
      * @param id  学生id
      * @returns {*}
      */
-    const checkIn = (isCanCheck, id) => {
+    const checkIn = (isCanCheck, id, action) => {
       if(isCanCheck !== '0') return;
       return patch('/v1/checkin', {
         data: {
-          id
+          id,
+          action,
         }
       }).then(res=>{
         tableProps.update && tableProps.update(tableProps.grade);
@@ -49,22 +50,34 @@ export default class SignTable extends React.Component {
       title: '联系方式',
       dataIndex: 'phone',
       key: 'phone',
+    },{
+      title: '类型',
+      dataIndex: 'user_type',
+      key: 'type',
+      render: (v = 0)=>{
+        const map = {
+          1: '午托',
+          2: '晚托',
+          3: '全托',
+          0: '其他',
+        };
+        return map[v];
+      }
     }, {
       title: '签到',
       key: 'action',
       render: (text, record) => {
         const {checkin_status} = record;
         const checkArr = checkin_status.split('').slice(0, 4);
-        console.log(checkArr);
         return (
           <span>
-      <Button disabled={checkArr[0]==='1'} onClick={e=>checkIn(checkArr[0], record.id)}>签到(中午)</Button>
+      <Button disabled={checkArr[0]==='1'} onClick={e=>checkIn(checkArr[0], record.id, 0)}>签到(中午)</Button>
       <Divider type="vertical"/>
-      <Button disabled={checkArr[1]==='1'} onClick={e=>checkIn(checkArr[1], record.id)}>签到(晚上)</Button>
+      <Button disabled={checkArr[1]==='1'} onClick={e=>checkIn(checkArr[1], record.id, 1)}>签到(晚上)</Button>
       <Divider type="vertical"/>
-      <Button disabled={checkArr[2]==='1'} onClick={e=>checkIn(checkArr[2], record.id)}>作业完成(晚上)</Button>
+      <Button disabled={checkArr[2]==='1'} onClick={e=>checkIn(checkArr[2], record.id, 2)}>作业完成(晚上)</Button>
       <Divider type="vertical"/>
-      <Button disabled={checkArr[3]==='1'} onClick={e=>checkIn(checkArr[3], record.id)}>离开(晚上)</Button>
+      <Button disabled={checkArr[3]==='1'} onClick={e=>checkIn(checkArr[3], record.id, 3)}>离开(晚上)</Button>
     </span>
         )
       },

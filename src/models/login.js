@@ -16,26 +16,28 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { put }) {
+    *login({ payload }, { put, call }) {
       const { username, password } = payload.data;
       console.log( username, password );
-      yield put({
-        type: 'app/login',
-        payload: {
-          isLogin: true,
-        }
-      });
-      yield put(routerRedux.push('/edu/sign-in'));
+      const login = function () {
+        return post('/v1/login', {
+          data: { ...payload.data }
+        });
+      };
+      // yield put({
+      //   type: 'app/login',
+      //   payload: {
+      //     isLogin: true,
+      //   }
+      // });
+      // yield put(routerRedux.push('/edu/sign-in'));
+      const result = yield call(login);
+      console.log(result, 'dddd');
+      if(result.data.err_code === 0) {
+        yield put(routerRedux.push('/edu/sign-in'));
+      }
 
       return;
-      post('/v1/login', {
-        data: { ...payload.data }
-      })
-        .then(res=>{
-          routerRedux.push('/edu/sign-in')
-        }, err=>{
-          message.error(err);
-        })
 
     }
   },

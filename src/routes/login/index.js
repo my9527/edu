@@ -42,7 +42,7 @@ class PageLogin extends React.Component {
         <Card className={style.loginCard} title="Login" bordered={false}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Item>
-              {getFieldDecorator('username', {
+              {getFieldDecorator('user_name', {
                 rules: [{ required: true, message: 'Please input your username!' }],
               })(
                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />

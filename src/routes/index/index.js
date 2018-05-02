@@ -7,6 +7,7 @@ import { menu } from './menu';
 import PageSignIn from '../signIn';
 import PageUploadFiles from '../uploadFiles';
 import PageLogin from '../login';
+import config from '../../config';
 
 import style from './index.less';
 
@@ -70,7 +71,9 @@ class PageIndex extends React.Component {
             </Menu>
           </Sider>
           <Layout>
-            <Header style={{ background: '#fff', padding: 0 }}>
+            <Header className={style.flexRow} style={{ background: '#fff', padding: 0}}>
+              <div className={style.flexRow}><h1 style={{textIndent: '1em'}}>{config.school}-{config.district}</h1></div>
+              <img src={config.logo} className={style.logo} alt=""/>
             </Header>
             <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
               <Switch>

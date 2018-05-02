@@ -25,7 +25,9 @@ export default {
   effects: {
     *fetchData({ payload: { page, grade} }, { put, call }) {
       const students = yield call(getStudents, { page, grade });
-      console.log(students, 'dddfff')
+      students.data = students.data || {};
+      students.data.classes = [null, 1,4,7];
+      // console.log(students, 'dddfff')
       // console.log(students);
       // const students = {
       //   data: [{
@@ -47,6 +49,7 @@ export default {
         type: 'save',
         payload: {
           data: [...students.data.user_extends],
+          classes: [...students.data.classes]
         }
       })
     }
@@ -54,7 +57,7 @@ export default {
 
   reducers: {
     save(state, action) {
-      return { ...state, records: [...action.payload.data] };
+      return { ...state, records: [...action.payload.data], classes: [...action.payload.classes] };
     },
   },
 
